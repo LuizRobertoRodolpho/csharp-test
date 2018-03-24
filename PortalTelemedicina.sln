@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalTelemedicina", "Porta
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DB35EC6D-7B63-48AC-AEED-63C1F3C86092}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalTelemedicina.DomainService", "PortalTelemedicina.DomainService\PortalTelemedicina.DomainService.csproj", "{435FDC68-A82E-4A32-9F76-EF0C7717F66C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalTelemedicina.Repository", "PortalTelemedicina.Repository\PortalTelemedicina.Repository.csproj", "{63992BD2-32C7-4D27-A4C3-D74216343C10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalTelemedicina.Tests", "PortalTelemedicina.Tests\PortalTelemedicina.Tests.csproj", "{DC264ED4-74E5-4ADD-BC35-4EDB8DEAD41B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +27,18 @@ Global
 		{DB35EC6D-7B63-48AC-AEED-63C1F3C86092}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB35EC6D-7B63-48AC-AEED-63C1F3C86092}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB35EC6D-7B63-48AC-AEED-63C1F3C86092}.Release|Any CPU.Build.0 = Release|Any CPU
+		{435FDC68-A82E-4A32-9F76-EF0C7717F66C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{435FDC68-A82E-4A32-9F76-EF0C7717F66C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{435FDC68-A82E-4A32-9F76-EF0C7717F66C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{435FDC68-A82E-4A32-9F76-EF0C7717F66C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63992BD2-32C7-4D27-A4C3-D74216343C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63992BD2-32C7-4D27-A4C3-D74216343C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63992BD2-32C7-4D27-A4C3-D74216343C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63992BD2-32C7-4D27-A4C3-D74216343C10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC264ED4-74E5-4ADD-BC35-4EDB8DEAD41B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC264ED4-74E5-4ADD-BC35-4EDB8DEAD41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC264ED4-74E5-4ADD-BC35-4EDB8DEAD41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC264ED4-74E5-4ADD-BC35-4EDB8DEAD41B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
