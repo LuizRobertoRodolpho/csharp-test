@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  portaltelemedicina:
+    image: portaltelemedicina
+    build:
+      context: .
+      dockerfile: PortalTelemedicina\Dockerfile
