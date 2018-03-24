@@ -4,10 +4,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalTelemedicina", "PortalTelemedicina\PortalTelemedicina.csproj", "{3941E179-2EB5-49CA-A7B6-9BE2DB8CBAA0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{435FDC68-A82E-4A32-9F76-EF0C7717F66C} = {435FDC68-A82E-4A32-9F76-EF0C7717F66C}
+		{63992BD2-32C7-4D27-A4C3-D74216343C10} = {63992BD2-32C7-4D27-A4C3-D74216343C10}
+	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DB35EC6D-7B63-48AC-AEED-63C1F3C86092}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalTelemedicina.DomainService", "PortalTelemedicina.DomainService\PortalTelemedicina.DomainService.csproj", "{435FDC68-A82E-4A32-9F76-EF0C7717F66C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63992BD2-32C7-4D27-A4C3-D74216343C10} = {63992BD2-32C7-4D27-A4C3-D74216343C10}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalTelemedicina.Repository", "PortalTelemedicina.Repository\PortalTelemedicina.Repository.csproj", "{63992BD2-32C7-4D27-A4C3-D74216343C10}"
 EndProject
