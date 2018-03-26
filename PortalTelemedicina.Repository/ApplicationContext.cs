@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PortalTelemedicina.Repository.Entities;
 
 namespace PortalTelemedicina.Repository
@@ -14,12 +13,14 @@ namespace PortalTelemedicina.Repository
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Product>().ToTable("Product");
             modelBuilder.Entity<Order>().ToTable("Order");
+            modelBuilder.Entity<OrderItem>().ToTable("OrderItem");
         }
     }
 }

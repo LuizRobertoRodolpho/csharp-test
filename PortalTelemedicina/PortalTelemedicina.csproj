@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PortalTelemedicina.DomainService\PortalTelemedicina.DomainService.csproj" />
     <ProjectReference Include="..\PortalTelemedicina.Repository\PortalTelemedicina.Repository.csproj" />
   </ItemGroup>
 

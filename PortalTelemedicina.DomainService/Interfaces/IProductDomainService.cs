@@ -25,7 +25,7 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="description"></param>
         /// <param name="price"></param>
         /// <returns>Returns true if the product was succesfully created.</returns>
-        bool Create(string name, string description, decimal price);
+        void Create(string name, string description, decimal price);
 
         /// <summary>
         /// Update a existing product.

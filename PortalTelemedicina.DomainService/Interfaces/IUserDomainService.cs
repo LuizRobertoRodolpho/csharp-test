@@ -14,7 +14,7 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="email"></param>
-        /// <returns></returns>
+        /// <returns>Returns a list of users.</returns>
         IEnumerable<User> Get(string username, string displayname,
             DateTime? startDate, DateTime? endDate, string email);
 
@@ -34,6 +34,6 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns>Returns null if the user was succesfully created, otherwise, return the error message.</returns>
-        string Create(string username, string displayname, string email, string password);
+        bool Create(User user);
     }
 }
