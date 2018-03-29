@@ -3,6 +3,25 @@ version: '3'
 services:
   portaltelemedicina:
     image: portaltelemedicina
+    container_name: portal-telemedicina-api
+    depends_on:
+      - sql.data
+    expose:
+      - "80"
+    environment:
+      - ConnectionString=sql.data
     build:
       context: .
       dockerfile: PortalTelemedicina\Dockerfile
+  sql.data:
+    image: luizrodolpho/portal-telemedicina-db
+    container_name: portal-telemedicina-db
+    hostname: dbservice
+    environment:
+      - MSSQL_SA_PASSWORD=Abc123?!
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+    expose:
+      - "1433"
+    ports:
+      - "5434:1433"
