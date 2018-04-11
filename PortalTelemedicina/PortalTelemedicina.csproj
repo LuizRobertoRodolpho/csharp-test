@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+    <PackageReference Include="RestSharp" Version="106.2.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +22,12 @@
   <ItemGroup>
     <ProjectReference Include="..\PortalTelemedicina.DomainService\PortalTelemedicina.DomainService.csproj" />
     <ProjectReference Include="..\PortalTelemedicina.Repository\PortalTelemedicina.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

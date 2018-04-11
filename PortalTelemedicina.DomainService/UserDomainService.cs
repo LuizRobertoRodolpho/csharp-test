@@ -65,9 +65,19 @@ namespace PortalTelemedicina.DomainService
             }
         }
 
-        public User Get(string uesrname, string password)
+        public bool Get(User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password))
+                    return false;
+
+                return context.Users.Where(x => x.UserName == user.UserName && x.Password == user.Password).Any();
+            }
+            catch
+            {
+                throw new Exception("Unable to find the user.");
+            }
         }
     }
 }

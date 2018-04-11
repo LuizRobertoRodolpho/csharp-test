@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PortalTelemedicina.DomainService;
 using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
@@ -20,6 +21,7 @@ namespace PortalTelemedicina.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize]
         public IActionResult Products(string name = null, string description = null, decimal? price = null,
                                 DateTime? startDate = null, DateTime? endDate = null)
         {
@@ -35,6 +37,7 @@ namespace PortalTelemedicina.Controllers
 
         [HttpPost]
         [Route("[controller]")]
+        [Authorize]
         public IActionResult Create([FromBody]Product value)
         {
             try
@@ -50,6 +53,7 @@ namespace PortalTelemedicina.Controllers
         }
 
         [HttpPut("[controller]/{id}")]
+        [Authorize]
         public IActionResult Update(int id, [FromBody]Product value)
         {
             try

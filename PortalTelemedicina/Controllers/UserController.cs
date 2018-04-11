@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PortalTelemedicina.DomainService;
 using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
@@ -19,6 +20,7 @@ namespace PortalTelemedicina.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize]
         public JsonResult Users(string username = null, string displayname = null,
                                 DateTime? startDate = null, DateTime? endDate = null, string email = null)
         {
