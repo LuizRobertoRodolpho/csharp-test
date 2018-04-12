@@ -11,25 +11,33 @@ namespace PortalTelemedicina
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            Configuration = builder.Build();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add functionality to inject IOptions<T>
+            services.AddOptions();
+
+            // Add our Config object so it can be injected
+            services.Configure<Auth0Config>(Configuration.GetSection("Auth0"));
+
             services.AddDbContext<ApplicationContext>(options =>
                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc().AddJsonOptions(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            //string domain = $"https://{Configuration["Auth0:Domain"]}/";
-            string domain = "https://elune.auth0.com/";
-            string audience = "https://elune.auth0.com/api/v2/";
+            string domain = $"https://{Configuration["Auth0:Domain"]}/";
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,9 +46,7 @@ namespace PortalTelemedicina
             }).AddJwtBearer(options =>
             {
                 options.Authority = domain;
-                //options.Audience = Configuration["Auth0:ApiIdentifier"];
-                options.Audience = audience;
-                //options.RequireHttpsMetadata = false;
+                options.Audience = Configuration["Auth0:ApiIdentifier"];
             });
 
             services.AddAuthorization(options =>
