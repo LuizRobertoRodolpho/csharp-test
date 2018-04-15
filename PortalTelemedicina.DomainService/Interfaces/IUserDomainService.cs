@@ -1,6 +1,7 @@
 ﻿using PortalTelemedicina.Repository.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PortalTelemedicina.DomainService.Interfaces
 {
@@ -15,16 +16,15 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="endDate"></param>
         /// <param name="email"></param>
         /// <returns>Returns a list of users.</returns>
-        IEnumerable<User> Get(string username, string displayname,
-            DateTime? startDate, DateTime? endDate, string email);
+        Task<List<User>> Get(string username, string displayname, DateTime? startDate, DateTime? endDate, string email);
 
         /// <summary>
-        /// Search for the given user and password.
+        /// Search for a user the given a username and password.
         /// </summary>
         /// <param name="uesrname"></param>
         /// <param name="password"></param>
         /// <returns>Returns true if user was found.</returns>
-        bool Get(string username, string password);
+        Task<bool> Get(string username, string password);
 
         /// <summary>
         /// Attemp to create a user in the database.
@@ -33,7 +33,7 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="displayname"></param>
         /// <param name="email"></param>
         /// <param name="password"></param>
-        /// <returns>Returns null if the user was succesfully created, otherwise, return the error message.</returns>
-        bool Create(User user);
+        /// <returns>Returns true if the user was succesfully created, otherwise, throws a error message.</returns>
+        Task<bool> Create(User user);
     }
 }

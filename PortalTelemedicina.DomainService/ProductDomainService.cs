@@ -1,9 +1,11 @@
-﻿using PortalTelemedicina.DomainService.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
 using PortalTelemedicina.Repository.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PortalTelemedicina.DomainService
 {
@@ -16,8 +18,7 @@ namespace PortalTelemedicina.DomainService
             context = _context;
         }
 
-        public IEnumerable<Product> Get(string name, string description, decimal? price,
-            DateTime? startDate, DateTime? endDate)
+        public async Task<List<Product>> Get(string name, string description, decimal? price, DateTime? startDate, DateTime? endDate)
         {
             try
             {
@@ -37,16 +38,15 @@ namespace PortalTelemedicina.DomainService
 
 #warning implement sort
 
-                return productsQuery;
+                return await productsQuery.ToListAsync();
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Unable to save the product. " + ex.Message);
-                throw ex;
+                throw;
             }
         }
 
-        public void Create(string name, string description, decimal price)
+        public async Task Create(string name, string description, decimal price)
         {
             try
             {
@@ -58,16 +58,15 @@ namespace PortalTelemedicina.DomainService
                     CreationDate = DateTime.Now
                 });
 
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Unable to save the product. " + ex.Message);
-                throw ex;
+                throw;
             }
         }
 
-        public bool Update(int productId, string name, string description, decimal? price)
+        public async Task<bool> Update(int productId, string name, string description, decimal? price)
         {
             try
             {
@@ -86,16 +85,15 @@ namespace PortalTelemedicina.DomainService
 
                     context.Products.Update(product);
 
-                    return context.SaveChanges() > 0;
+                    return await context.SaveChangesAsync() > 0;
                 }
 
                 return false;
 
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Unable to update the product. " + ex.Message);
-                return false;
+                throw;
             }
         }
     }

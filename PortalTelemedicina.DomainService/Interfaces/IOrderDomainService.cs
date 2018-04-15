@@ -1,6 +1,7 @@
 ﻿using PortalTelemedicina.Repository.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PortalTelemedicina.DomainService.Interfaces
 {
@@ -16,12 +17,12 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="minTotal">Orders with a minimum total value.</param>
         /// <param name="maxTotal">Orders with a maximum total value.</param>
         /// <returns>Returns a list of orders.</returns>
-        List<Order> Get(int? orderId, int? userId, DateTime? startDate, DateTime? endDate, decimal? minTotal, decimal? maxTotal);
+        Task<List<Order>> Get(int? orderId, int? userId, DateTime? startDate, DateTime? endDate, decimal? minTotal, decimal? maxTotal);
 
         /// <summary>
         /// Create a new order with the associated products. Product ids that does not exist are reported within an exception.
         /// </summary>
         /// <returns>Returns true if the order was succesfully created.</returns>
-        bool Create(Order order);
+        Task<bool> Create(Order order);
     }
 }

@@ -8,6 +8,7 @@ using PortalTelemedicina.ViewModel;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PortalTelemedicina.Controllers
 {
@@ -26,7 +27,7 @@ namespace PortalTelemedicina.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult SignIn([FromBody]SignInViewModel value)
+        public async Task<IActionResult> SignIn([FromBody]SignInViewModel value)
         {
             try
             {
@@ -35,7 +36,7 @@ namespace PortalTelemedicina.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var success = _domainService.Get(value.UserName, value.Password);
+                var success = await _domainService.Get(value.UserName, value.Password);
 
                 if (success)
                 {
@@ -48,7 +49,7 @@ namespace PortalTelemedicina.Controllers
                     IRestResponse response = client.Execute(request);
                     var responseDictionary = new RestSharp.Deserializers.JsonDeserializer().Deserialize<Dictionary<string, string>>(response);
 
-                    return Ok(responseDictionary["access_token"]);
+                    return Ok($"Bearer {responseDictionary["access_token"]}");
                 }
                 else
                 {
@@ -63,7 +64,7 @@ namespace PortalTelemedicina.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult SignUp([FromBody]SignUpViewModel value)
+        public async Task<IActionResult> SignUp([FromBody]SignUpViewModel value)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace PortalTelemedicina.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var success = _domainService.Create(new User
+                var success = await _domainService.Create(new User
                 {
                     DisplayName = value.DisplayName,
                     Email = value.Email,

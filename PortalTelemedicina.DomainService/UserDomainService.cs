@@ -1,9 +1,11 @@
-﻿using PortalTelemedicina.DomainService.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
 using PortalTelemedicina.Repository.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PortalTelemedicina.DomainService
 {
@@ -16,8 +18,7 @@ namespace PortalTelemedicina.DomainService
             context = _context;
         }
 
-        public IEnumerable<User> Get(string username, string displayname,
-            DateTime? startDate, DateTime? endDate, string email)
+        public async Task<List<User>> Get(string username, string displayname, DateTime? startDate, DateTime? endDate, string email)
         {
             var userQuery = context.Users.AsQueryable();
 
@@ -35,10 +36,10 @@ namespace PortalTelemedicina.DomainService
 
 #warning implement sort
 
-            return userQuery;
+            return await userQuery.ToListAsync();
         }
 
-        public bool Create(User user)
+        public async Task<bool> Create(User user)
         {
             try
             {
@@ -54,25 +55,23 @@ namespace PortalTelemedicina.DomainService
                 {
                     user.CreationDate = DateTime.Now;
                     context.Users.Add(user);
-                    return context.SaveChanges() > 0;
+                    return await context.SaveChangesAsync() > 0;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Unable to save the product. " + ex.Message);
-
-                throw ex;
+                throw;
             }
         }
 
-        public bool Get(string username, string password)
+        public async Task<bool> Get(string username, string password)
         {
             try
             {
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                     return false;
 
-                return context.Users.Where(x => x.UserName == username && x.Password == password).Any();
+                return await context.Users.Where(x => x.UserName == username && x.Password == password).AnyAsync();
             }
             catch
             {

@@ -7,6 +7,7 @@ using PortalTelemedicina.Repository.Entities;
 using PortalTelemedicina.ViewModel;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PortalTelemedicina.Controllers
 {
@@ -24,11 +25,11 @@ namespace PortalTelemedicina.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize]
-        public IActionResult Orders(OrderSearchViewModel data)
+        public async Task<IActionResult> Orders(OrderSearchViewModel data)
         {
             try
             {
-                var orders = _domainService.Get(data.OrderId, data.UserId, data.StartDate, data.EndDate, data.MinTotal, data.MaxTotal);
+                var orders = await _domainService.Get(data.OrderId, data.UserId, data.StartDate, data.EndDate, data.MinTotal, data.MaxTotal);
 
                 return new OkObjectResult(orders);
             }
@@ -41,7 +42,7 @@ namespace PortalTelemedicina.Controllers
         [HttpPost]
         [Route("[controller]")]
         [Authorize]
-        public IActionResult Create([FromBody]OrderCreateViewModel order)
+        public async Task<IActionResult> Create([FromBody]OrderCreateViewModel order)
         {
             try
             {
@@ -50,7 +51,7 @@ namespace PortalTelemedicina.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var success = _domainService.Create(new Order
+                var success = await _domainService.Create(new Order
                 {
                     UserId = order.UserId,
                     OrderItems = order.OrderItems.Select(x => new OrderItem

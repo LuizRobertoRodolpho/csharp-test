@@ -1,9 +1,11 @@
-﻿using PortalTelemedicina.DomainService.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
 using PortalTelemedicina.Repository.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PortalTelemedicina.DomainService
 {
@@ -16,7 +18,7 @@ namespace PortalTelemedicina.DomainService
             context = _context;
         }
 
-        public List<Order> Get(int? orderId, int? userId, DateTime? startDate, DateTime? endDate, decimal? minTotal, decimal? maxTotal)
+        public async Task<List<Order>> Get(int? orderId, int? userId, DateTime? startDate, DateTime? endDate, decimal? minTotal, decimal? maxTotal)
         {
             var ordersQuery = context.Orders.AsQueryable();
 
@@ -45,7 +47,7 @@ namespace PortalTelemedicina.DomainService
             }
 
             // get order items -- can be updated to get automatically
-            var ordersList = ordersQuery.ToList();
+            var ordersList = await ordersQuery.ToListAsync();
 
             foreach (var o in ordersList)
             {
@@ -57,9 +59,9 @@ namespace PortalTelemedicina.DomainService
             return ordersList;
         }
 
-        public bool Create(Order order)
+        public async Task<bool> Create(Order order)
         {
-            if (!context.Users.Any(x => x.UserId == order.UserId))
+            if (await context.Users.AnyAsync(x => x.UserId == order.UserId) == false)
             {
                 throw new Exception("User not found!");
             }
@@ -96,9 +98,9 @@ namespace PortalTelemedicina.DomainService
 
             if (newOrder.OrderItems.Count > 0)
             {
-                context.Orders.Add(newOrder);
+                await context.Orders.AddAsync(newOrder);
 
-                return context.SaveChanges() > 0;
+                return await context.SaveChangesAsync() > 0;
             }
             else
             {

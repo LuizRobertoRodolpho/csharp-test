@@ -5,6 +5,7 @@ using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
 using PortalTelemedicina.ViewModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PortalTelemedicina.Controllers
 {
@@ -22,7 +23,7 @@ namespace PortalTelemedicina.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize]
-        public IActionResult Users(UserSearchViewModel data)
+        public async Task<IActionResult> Users(UserSearchViewModel data)
         {
             try
             {
@@ -31,7 +32,7 @@ namespace PortalTelemedicina.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var users = _domainService.Get(data.UserName, data.DisplayName, data.StartDate, data.EndDate, data.Email);
+                var users = await _domainService.Get(data.UserName, data.DisplayName, data.StartDate, data.EndDate, data.Email);
                 var query = from user in users
                             select new
                             {
