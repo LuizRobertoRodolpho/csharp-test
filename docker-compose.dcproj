@@ -5,7 +5,7 @@
     <DockerTargetOS>Windows</DockerTargetOS>
     <ProjectGuid>db35ec6d-7b63-48ac-aeed-63c1f3c86092</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://{ServiceIPAddress}/api/users</DockerServiceUrl>
+    <DockerServiceUrl>http://{ServiceIPAddress}/swagger</DockerServiceUrl>
     <DockerServiceName>portaltelemedicina</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

@@ -4,7 +4,9 @@ using PortalTelemedicina.DomainService;
 using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
 using PortalTelemedicina.Repository.Entities;
+using PortalTelemedicina.ViewModel;
 using System;
+using System.Linq;
 
 namespace PortalTelemedicina.Controllers
 {
@@ -12,7 +14,7 @@ namespace PortalTelemedicina.Controllers
     [Route("api/")]
     public class OrderController : Controller
     {
-        IOrderDomainService _domainService;
+        private IOrderDomainService _domainService;
 
         public OrderController(ApplicationContext context)
         {
@@ -22,14 +24,13 @@ namespace PortalTelemedicina.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize]
-        public IActionResult Orders(int? orderId = null, int? userId = null,
-            DateTime? startDate = null, DateTime? endDate = null)
+        public IActionResult Orders(OrderSearchViewModel data)
         {
             try
             {
-                var orders = _domainService.Get(orderId, userId, startDate, endDate);
+                var orders = _domainService.Get(data.OrderId, data.UserId, data.StartDate, data.EndDate, data.MinTotal, data.MaxTotal);
 
-                return new JsonResult(orders);
+                return new OkObjectResult(orders);
             }
             catch
             {
@@ -40,20 +41,34 @@ namespace PortalTelemedicina.Controllers
         [HttpPost]
         [Route("[controller]")]
         [Authorize]
-        public IActionResult Create([FromBody]Order order)
+        public IActionResult Create([FromBody]OrderCreateViewModel order)
         {
             try
             {
-                var success = _domainService.Create(order);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var success = _domainService.Create(new Order
+                {
+                    UserId = order.UserId,
+                    OrderItems = order.OrderItems.Select(x => new OrderItem
+                    {
+                        ProductId = x.ProductId,
+                        Amount = x.Amount,
+                        CurrentPrice = x.CurrentPrice
+                    }).ToList()
+                });
 
                 if (success)
                     return Ok("Order created.");
                 else
                     return NotFound("User or product not found.");
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("Unable to create the order.");
+                return BadRequest(ex.Message);
             }
         }
     }

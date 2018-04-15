@@ -16,21 +16,32 @@ namespace PortalTelemedicina.DomainService
             context = _context;
         }
 
-        public List<Order> Get(int? orderId, int? userId, DateTime? startDate, DateTime? endDate)
+        public List<Order> Get(int? orderId, int? userId, DateTime? startDate, DateTime? endDate, decimal? minTotal, decimal? maxTotal)
         {
             var ordersQuery = context.Orders.AsQueryable();
 
             if (orderId.HasValue)
-            {
                 ordersQuery = ordersQuery.Where(x => x.OrderId == orderId.Value);
-            }
-            else
-            {
-                if (userId.HasValue)
-                    ordersQuery = ordersQuery.Where(x => x.UserId == userId.Value);
 
-                if (startDate.HasValue && endDate.HasValue)
-                    ordersQuery = ordersQuery.Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate);
+            if (userId.HasValue)
+                ordersQuery = ordersQuery.Where(x => x.UserId == userId.Value);
+
+            if (startDate.HasValue)
+                ordersQuery = ordersQuery.Where(x => x.CreationDate >= startDate);
+
+            if (endDate.HasValue)
+                ordersQuery = ordersQuery.Where(x => x.CreationDate <= endDate);
+
+            // orders with at total minimum value
+            if (minTotal.HasValue)
+            {
+                ordersQuery = ordersQuery.Where(x => x.OrderItems.Sum(s => s.CurrentPrice * s.Amount) >= minTotal.Value);
+            }
+
+            // orders with at total maximum value
+            if (maxTotal.HasValue)
+            {
+                ordersQuery = ordersQuery.Where(x => x.OrderItems.Sum(s => s.CurrentPrice * s.Amount) <= maxTotal.Value);
             }
 
             // get order items -- can be updated to get automatically
@@ -48,38 +59,51 @@ namespace PortalTelemedicina.DomainService
 
         public bool Create(Order order)
         {
-            // check if products was passed and if the user exists in the database
-            if (order.OrderItems.Count > 0 && context.Users.Any(x => x.UserId == order.UserId))
+            if (!context.Users.Any(x => x.UserId == order.UserId))
             {
-                order.CreationDate = DateTime.Now;
-
-                var newOrder = new Order();
-                newOrder.UserId = order.UserId;
-                newOrder.CreationDate = DateTime.Now;
-
-                newOrder.OrderItems = order.OrderItems.Where(x => context.Products
-                                                                         .Where(y => y.ProductId == x.ProductId).Any())
-                                                                         .Select(oitem => new OrderItem
-                                                                         {
-                                                                             OrderId = newOrder.OrderId,
-                                                                             ProductId = oitem.ProductId,
-                                                                             CurrentPrice = oitem.CurrentPrice,
-                                                                             Amount = oitem.Amount
-                                                                         }).ToList();
-
-                if (newOrder.OrderItems.Count > 0)
-                {
-                    context.Orders.Add(newOrder);
-
-                    return context.SaveChanges() > 0;
-                }
-                else
-                {
-                    return false;
-                }
+                throw new Exception("User not found!");
             }
 
-            return false;
+            if (order.OrderItems.Count == 0)
+            {
+                throw new Exception("The order requires at least on product!");
+            }
+
+            // check if all products exists in the database
+            var missingProducts = order.OrderItems.Where(x => !context.Products
+                                                                      .Where(y => y.ProductId == x.ProductId)
+                                                                      .Any());
+
+            if (missingProducts.Count() > 0)
+            {
+                var ids = string.Join(", ", missingProducts.Select(x => x.ProductId));
+                throw new Exception("The following products was not found: " + ids);
+            }
+
+            var newOrder = new Order();
+            newOrder.UserId = order.UserId;
+            newOrder.CreationDate = DateTime.Now;
+
+            newOrder.OrderItems = order.OrderItems.Where(x => context.Products
+                                                                     .Where(y => y.ProductId == x.ProductId).Any())
+                                                                     .Select(oitem => new OrderItem
+                                                                     {
+                                                                         OrderId = newOrder.OrderId,
+                                                                         ProductId = oitem.ProductId,
+                                                                         CurrentPrice = oitem.CurrentPrice,
+                                                                         Amount = oitem.Amount
+                                                                     }).ToList();
+
+            if (newOrder.OrderItems.Count > 0)
+            {
+                context.Orders.Add(newOrder);
+
+                return context.SaveChanges() > 0;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

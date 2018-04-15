@@ -4,6 +4,7 @@ using PortalTelemedicina.DomainService;
 using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
 using PortalTelemedicina.Repository.Entities;
+using PortalTelemedicina.ViewModel;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace PortalTelemedicina.Controllers
     [Route("api/")]
     public class LoginController : Controller
     {
-        IUserDomainService _domainService;
+        private IUserDomainService _domainService;
         private readonly IOptions<Auth0Config> config;
 
         public LoginController(ApplicationContext context, IOptions<Auth0Config> config)
@@ -25,15 +26,20 @@ namespace PortalTelemedicina.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult SignIn([FromBody]User value)
+        public IActionResult SignIn([FromBody]SignInViewModel value)
         {
             try
             {
-                var success = _domainService.Get(value);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var success = _domainService.Get(value.UserName, value.Password);
 
                 if (success)
                 {
-                    // retrieve api token
+                    // retrieve Auth0 api token
                     var client = new RestClient(config.Value.TokenAuthAddress);
                     var request = new RestRequest(Method.POST);
                     var headerContent = $"{{\"client_id\":\"{config.Value.ClientId}\",\"client_secret\":\"{config.Value.ClientSecret}\",\"audience\":\"{config.Value.ApiIdentifier}\",\"grant_type\":\"client_credentials\"}}";
@@ -46,31 +52,42 @@ namespace PortalTelemedicina.Controllers
                 }
                 else
                 {
-                    return NotFound("User not found, check the fields.");
+                    return NotFound("Authentication failed!");
                 }
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult SignUp([FromBody]User value)
+        public IActionResult SignUp([FromBody]SignUpViewModel value)
         {
             try
             {
-                var success = _domainService.Create(value);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var success = _domainService.Create(new User
+                {
+                    DisplayName = value.DisplayName,
+                    Email = value.Email,
+                    UserName = value.UserName,
+                    Password = value.Password
+                });
 
                 if (success)
                     return Ok("User created.");
                 else
-                    return NotFound();
+                    return BadRequest("Unable to create the user.");
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("Unable to create the user.");
+                return BadRequest("Unable to create the user. " + ex.Message);
             }
         }
     }

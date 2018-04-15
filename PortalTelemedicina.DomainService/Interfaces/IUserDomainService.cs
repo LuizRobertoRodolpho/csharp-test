@@ -24,7 +24,7 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="uesrname"></param>
         /// <param name="password"></param>
         /// <returns>Returns true if user was found.</returns>
-        bool Get(User user);
+        bool Get(string username, string password);
 
         /// <summary>
         /// Attemp to create a user in the database.

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using PortalTelemedicina.DomainService;
 using PortalTelemedicina.DomainService.Interfaces;
 using PortalTelemedicina.Repository;
-using System;
+using PortalTelemedicina.ViewModel;
+using System.Linq;
 
 namespace PortalTelemedicina.Controllers
 {
@@ -11,7 +12,7 @@ namespace PortalTelemedicina.Controllers
     [Route("api/")]
     public class UserController : Controller
     {
-        IUserDomainService _domainService;
+        private IUserDomainService _domainService;
 
         public UserController(ApplicationContext context)
         {
@@ -21,10 +22,32 @@ namespace PortalTelemedicina.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize]
-        public JsonResult Users(string username = null, string displayname = null,
-                                DateTime? startDate = null, DateTime? endDate = null, string email = null)
+        public IActionResult Users(UserSearchViewModel data)
         {
-            return new JsonResult(_domainService.Get(username, displayname, startDate, endDate, email));
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var users = _domainService.Get(data.UserName, data.DisplayName, data.StartDate, data.EndDate, data.Email);
+                var query = from user in users
+                            select new
+                            {
+                                userId = user.UserId,
+                                userName = user.UserName,
+                                displayName = user.DisplayName,
+                                email = user.Email,
+                                creationDate = user.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")
+                            };
+
+                return new OkObjectResult(query);
+            }
+            catch
+            {
+                return BadRequest("Unable to perform the search.");
+            }
         }
     }
 }

@@ -65,14 +65,14 @@ namespace PortalTelemedicina.DomainService
             }
         }
 
-        public bool Get(User user)
+        public bool Get(string username, string password)
         {
             try
             {
-                if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password))
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                     return false;
 
-                return context.Users.Where(x => x.UserName == user.UserName && x.Password == user.Password).Any();
+                return context.Users.Where(x => x.UserName == username && x.Password == password).Any();
             }
             catch
             {
