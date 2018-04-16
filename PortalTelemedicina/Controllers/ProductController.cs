@@ -32,7 +32,7 @@ namespace PortalTelemedicina.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var products = await _domainService.Get(data.Name, data.Description, data.Price, data.StartDate, data.EndDate);
+                var products = await _domainService.Get(data.Name, data.Description, data.Price, data.StartDate, data.EndDate, data.OrderBy, data.OrderType);
                 var query = from product in products
                             select new ProductSearchResultViewModel
                             {

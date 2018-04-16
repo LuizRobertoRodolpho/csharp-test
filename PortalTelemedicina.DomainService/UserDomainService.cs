@@ -18,7 +18,7 @@ namespace PortalTelemedicina.DomainService
             context = _context;
         }
 
-        public async Task<List<User>> Get(string username, string displayname, DateTime? startDate, DateTime? endDate, string email)
+        public async Task<List<User>> Get(string username, string displayname, DateTime? startDate, DateTime? endDate, string email, string orderBy, string orderType)
         {
             var userQuery = context.Users.AsQueryable();
 
@@ -33,6 +33,31 @@ namespace PortalTelemedicina.DomainService
 
             if (!string.IsNullOrEmpty(email))
                 userQuery = userQuery.Where(x => x.Email == email);
+
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                if (orderBy.ToLower() == "username")
+                {
+                    if (orderType.ToLower() == "asc")
+                        userQuery = userQuery.OrderBy(x => x.UserName);
+                    else if (orderType.ToLower() == "desc")
+                        userQuery = userQuery.OrderByDescending(x => x.UserName);
+                }
+                else if (orderBy.ToLower() == "displayname")
+                {
+                    if (orderType.ToLower() == "asc")
+                        userQuery = userQuery.OrderBy(x => x.DisplayName);
+                    else if (orderType.ToLower() == "desc")
+                        userQuery = userQuery.OrderByDescending(x => x.DisplayName);
+                }
+                else if (orderBy.ToLower() == "email")
+                {
+                    if (orderType.ToLower() == "asc")
+                        userQuery = userQuery.OrderBy(x => x.Email);
+                    else if (orderType.ToLower() == "desc")
+                        userQuery = userQuery.OrderByDescending(x => x.Email);
+                }
+            }
 
             return await userQuery.ToListAsync();
         }

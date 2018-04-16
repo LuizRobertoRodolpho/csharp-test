@@ -15,8 +15,10 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="email"></param>
+        /// <param name="orderBy">Column to sort by</param>
+        /// <param name="orderType">Sort type asc for ascending, desc for descending</param>
         /// <returns>Returns a list of users.</returns>
-        Task<List<User>> Get(string username, string displayname, DateTime? startDate, DateTime? endDate, string email);
+        Task<List<User>> Get(string username, string displayname, DateTime? startDate, DateTime? endDate, string email, string orderBy, string orderType);
 
         /// <summary>
         /// Search for a user the given a username and password.

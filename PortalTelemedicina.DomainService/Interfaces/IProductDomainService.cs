@@ -15,8 +15,10 @@ namespace PortalTelemedicina.DomainService.Interfaces
         /// <param name="price"></param>
         /// <param name="startDate">Initial creation date.</param>
         /// <param name="endDate">End creation date.</param>
+        /// <param name="orderBy">Column to sort by</param>
+        /// <param name="orderType">Sort type asc for ascending, desc for descending</param>
         /// <returns></returns>
-        Task<List<Product>> Get(string name, string description, decimal? price, DateTime? startDate, DateTime? endDate);
+        Task<List<Product>> Get(string name, string description, decimal? price, DateTime? startDate, DateTime? endDate, string orderBy, string orderType);
 
         /// <summary>
         /// Create a new product.

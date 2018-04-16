@@ -32,7 +32,7 @@ namespace PortalTelemedicina.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var users = await _domainService.Get(data.UserName, data.DisplayName, data.StartDate, data.EndDate, data.Email);
+                var users = await _domainService.Get(data.UserName, data.DisplayName, data.StartDate, data.EndDate, data.Email, data.OrderBy, data.OrderType);
                 var query = from user in users
                             select new UserSearchResultViewModel
                             {

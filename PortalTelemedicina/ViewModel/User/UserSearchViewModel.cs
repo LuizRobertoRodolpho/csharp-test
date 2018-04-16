@@ -18,5 +18,11 @@ namespace PortalTelemedicina.ViewModel
         [MaxLength(70)]
         [EmailAddress]
         public string Email { get; set; }
+
+        // Column name
+        public string OrderBy { get; set; }
+
+        // ASC or DESC
+        public string OrderType { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace PortalTelemedicina.DomainService
             context = _context;
         }
 
-        public async Task<List<Product>> Get(string name, string description, decimal? price, DateTime? startDate, DateTime? endDate)
+        public async Task<List<Product>> Get(string name, string description, decimal? price, DateTime? startDate, DateTime? endDate, string orderBy, string orderType)
         {
             try
             {
@@ -35,6 +35,24 @@ namespace PortalTelemedicina.DomainService
 
                 if (price.HasValue)
                     productsQuery = productsQuery.Where(x => x.Price == price.Value);
+
+                if (!string.IsNullOrEmpty(orderBy))
+                {
+                    if (orderBy.ToLower() == "name")
+                    {
+                        if (orderType.ToLower() == "asc")
+                            productsQuery = productsQuery.OrderBy(x => x.Name);
+                        else if (orderType.ToLower() == "desc")
+                            productsQuery = productsQuery.OrderByDescending(x => x.Name);
+                    }
+                    else if (orderBy.ToLower() == "description")
+                    {
+                        if (orderType.ToLower() == "asc")
+                            productsQuery = productsQuery.OrderBy(x => x.Description);
+                        else if (orderType.ToLower() == "desc")
+                            productsQuery = productsQuery.OrderByDescending(x => x.Description);
+                    }
+                }
 
                 return await productsQuery.ToListAsync();
             }
