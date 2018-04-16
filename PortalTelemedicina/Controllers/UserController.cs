@@ -34,16 +34,16 @@ namespace PortalTelemedicina.Controllers
 
                 var users = await _domainService.Get(data.UserName, data.DisplayName, data.StartDate, data.EndDate, data.Email);
                 var query = from user in users
-                            select new
+                            select new UserSearchResultViewModel
                             {
-                                userId = user.UserId,
-                                userName = user.UserName,
-                                displayName = user.DisplayName,
-                                email = user.Email,
-                                creationDate = user.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")
+                                UserId = user.UserId,
+                                UserName = user.UserName,
+                                DisplayName = user.DisplayName,
+                                Email = user.Email,
+                                CreationDate = user.CreationDate
                             };
 
-                return new OkObjectResult(query);
+                return new OkObjectResult(query.ToList());
             }
             catch
             {

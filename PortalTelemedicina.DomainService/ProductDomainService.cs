@@ -58,7 +58,7 @@ namespace PortalTelemedicina.DomainService
                     CreationDate = DateTime.Now
                 });
 
-                await context.SaveChangesAsync();
+                var success = await context.SaveChangesAsync();
             }
             catch
             {

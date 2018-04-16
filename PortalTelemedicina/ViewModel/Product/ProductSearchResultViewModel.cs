@@ -1,9 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace PortalTelemedicina.Repository.Entities
+namespace PortalTelemedicina.ViewModel
 {
-    public class Product
+    public class ProductSearchResultViewModel
     {
         public int ProductId { get; set; }
         public string Name { get; set; }

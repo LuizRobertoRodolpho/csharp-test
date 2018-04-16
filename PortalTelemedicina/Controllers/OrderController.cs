@@ -31,7 +31,20 @@ namespace PortalTelemedicina.Controllers
             {
                 var orders = await _domainService.Get(data.OrderId, data.UserId, data.StartDate, data.EndDate, data.MinTotal, data.MaxTotal);
 
-                return new OkObjectResult(orders);
+                var viewModelList = orders.Select(x => new OrderResultViewModel
+                {
+                    OrderId = x.OrderId,
+                    CreationDate = x.CreationDate,
+                    OrderItems = x.OrderItems.Select(y => new OrderItemResultViewModel
+                                                            {
+                                                                OrderItemId = y.OrderItemId,
+                                                                ProductId = y.ProductId,
+                                                                Amount = y.Amount,
+                                                                CurrentPrice = y.CurrentPrice
+                                                            }).ToList()
+                }).ToList();
+
+                return new OkObjectResult(viewModelList);
             }
             catch
             {

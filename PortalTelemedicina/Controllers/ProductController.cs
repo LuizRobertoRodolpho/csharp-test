@@ -34,16 +34,16 @@ namespace PortalTelemedicina.Controllers
 
                 var products = await _domainService.Get(data.Name, data.Description, data.Price, data.StartDate, data.EndDate);
                 var query = from product in products
-                            select new
+                            select new ProductSearchResultViewModel
                             {
-                                productId = product.ProductId,
-                                name = product.Name,
-                                description = product.Description,
-                                price = product.Price.ToString("0.00"),
-                                creationDate = product.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")
+                                ProductId = product.ProductId,
+                                Name = product.Name,
+                                Description = product.Description,
+                                Price = product.Price,
+                                CreationDate = product.CreationDate
                             };
 
-                return new OkObjectResult(query);
+                return new OkObjectResult(query.ToList());
             }
             catch
             {
