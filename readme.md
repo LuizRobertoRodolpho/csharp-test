@@ -1,3 +1,27 @@
+# Release Details
+
+## Installation
+Clone this repository and execute the INSTALL.SH script.
+The following steps can be followed:
+- Automated test execution with results
+- Docker build will automatically download images and dependencies from Docker Hub
+- Docker execution. At this point you will receive the exposed address and point to access the application
+- If Google Chrome is installed on machine, the browser will be launched and display the API Documentation
+
+## API Documentation
+- Documentation is exposed using Swagger and allows the user to test all endpoints with pre-defined sample data
+- Click on each endpoint to read details
+- API authentication is made using Auth0
+- Create your account using the /api/SignUp endpoint
+- Sign in at the endpoint /api/SignIn using your credentials. The return value of the call is the API Token, already formatted
+- At the top right of the page you can click in the Authenticate button and paste the API Token received in the Sign In
+- Now you can test other endpoints that are secured by Auth0
+
+## Project details
+- The Database container is running a Microsoft SQL Express instance with all tables already created
+- A image can be found at the Docker Hub (https://hub.docker.com/r/luizrodolpho/portal-telemedicina-db/)
+- The project is build to run on Windows
+
 # C# Test for candidates
 
 
