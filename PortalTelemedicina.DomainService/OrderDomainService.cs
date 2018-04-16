@@ -54,8 +54,6 @@ namespace PortalTelemedicina.DomainService
                 o.OrderItems = context.OrderItems.Where(x => x.OrderId == o.OrderId).ToList();
             }
 
-#warning implement sort
-
             return ordersList;
         }
 

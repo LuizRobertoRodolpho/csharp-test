@@ -36,8 +36,6 @@ namespace PortalTelemedicina.DomainService
                 if (price.HasValue)
                     productsQuery = productsQuery.Where(x => x.Price == price.Value);
 
-#warning implement sort
-
                 return await productsQuery.ToListAsync();
             }
             catch

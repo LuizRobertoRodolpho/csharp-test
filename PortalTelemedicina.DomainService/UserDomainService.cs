@@ -34,8 +34,6 @@ namespace PortalTelemedicina.DomainService
             if (!string.IsNullOrEmpty(email))
                 userQuery = userQuery.Where(x => x.Email == email);
 
-#warning implement sort
-
             return await userQuery.ToListAsync();
         }
 
